@@ -12,12 +12,14 @@
     "require": {
         "php": "7.*",
         "illuminate/database": "5.3.*",
-        "illuminate/support": "5.3.*",
-        "illuminate/console": "5.3.*",
         "doctrine/dbal": "^2.5"
     },
     "require-dev": {
         "phpspec/phpspec": "^3.2"
+    },
+    "suggest": {
+        "illuminate/console:": "Required if using the provided artisan command.",
+        "illuminate/support:": "Required if using the laravel service provider."
     },
     "autoload": {
         "psr-4": {
