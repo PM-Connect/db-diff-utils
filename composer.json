@@ -18,8 +18,8 @@
         "phpspec/phpspec": "^3.2"
     },
     "suggest": {
-        "illuminate/console:": "Required if using the provided artisan command.",
-        "illuminate/support:": "Required if using the laravel service provider."
+        "illuminate/console": "Required if using the provided artisan command.",
+        "illuminate/support": "Required if using the laravel service provider."
     },
     "autoload": {
         "psr-4": {
