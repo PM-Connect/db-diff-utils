@@ -1,5 +1,5 @@
 {
-    "name": "pm-connect/db-diff-util",
+    "name": "pm-connect/db-diff-utils",
     "description": "Database Diff Utilities",
     "type": "library",
     "license": "MIT",
