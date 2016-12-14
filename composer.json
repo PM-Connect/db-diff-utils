@@ -1,0 +1,27 @@
+{
+    "name": "pm-connect/db-diff-util",
+    "description": "Database Diff Utilities",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Joseph Ralph",
+            "email": "joseph@pmconnect.co.uk"
+        }
+    ],
+    "require": {
+        "php": "7.*",
+        "illuminate/database": "5.3.*",
+        "illuminate/support": "5.3.*",
+        "illuminate/console": "5.3.*",
+        "doctrine/dbal": "^2.5"
+    },
+    "require-dev": {
+        "phpspec/phpspec": "^3.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "PMConnect\\DBDiff\\Utils\\": "src/"
+        }
+    }
+}
