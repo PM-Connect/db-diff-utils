@@ -99,15 +99,18 @@ class TableStructure implements DiffContract
      */
     protected function diffColumnNames(string $table, array $db1Columns, array $db2Columns)
     {
+        $db1Name = $this->db1->getDatabaseName();
+        $db2Name = $this->db2->getDatabaseName();
+
         $context = [
             'table' => $table,
-            'database' => $this->db1->getDatabaseName()
+            'database' => $db1Name
         ];
 
         foreach (array_keys($db1Columns) as $name) {
             if (!in_array($name, array_keys($db2Columns))) {
                 $this->output->write(
-                    $this->db1->getDatabaseName() . ':' . $table . ':' . $name . ' was not found in database "' . $this->db2->getDatabaseName() . '".',
+                    $db1Name . ':' . $table . ':' . $name . ' was not found in database "' . $db2Name . '".',
                     array_merge($context, [
                         'column' => $name,
                         'type' => 'column_exists_in_comparison',
@@ -126,7 +129,7 @@ class TableStructure implements DiffContract
         foreach (array_keys($db2Columns) as $name) {
             if (!in_array($name, array_keys($db1Columns))) {
                 $this->output->write(
-                    $this->db2->getDatabaseName() . ':' . $table . ':' . $name . ' was not found in database "' . $this->db1->getDatabaseName() . '".',
+                    $db2Name . ':' . $table . ':' . $name . ' was not found in database "' . $db1Name . '".',
                     array_merge($context, [
                         'column' => $name,
                         'type' => 'column_exists_in_primary',
@@ -152,6 +155,9 @@ class TableStructure implements DiffContract
      */
     protected function diffColumnStructure(string $table, array $db1Columns, array $db2Columns)
     {
+        $db1Name = $this->db1->getDatabaseName();
+        $db2Name = $this->db2->getDatabaseName();
+
         $context = [
             'table' => $table,
             'database' => $this->db1->getDatabaseName(),
@@ -186,9 +192,9 @@ class TableStructure implements DiffContract
             $column2Length = $column2->getLength() ?? $column1Type->getDefaultLength($this->db2->getDoctrineConnection()->getDatabasePlatform());
 
             if ($column1Length != $column2Length) {
-                $message = $this->db1->getDatabaseName() . ':' . $table . ':' . $name . ':' . $column1Length
+                $message = $db1Name . ':' . $table . ':' . $name . ':' . $column1Length
                     . ' vs '
-                    . $this->db2->getDatabaseName() . ':' . $table . ':' . $name . ':' . $column2Length;
+                    . $db2Name . ':' . $table . ':' . $name . ':' . $column2Length;
 
                 $this->output->write($message, array_merge($context, [
                     'column' => $name,
@@ -205,9 +211,9 @@ class TableStructure implements DiffContract
 
             if ($column1->getNotnull() != $column2->getNotnull()) {
                 if ($column2->getNotNull()) {
-                    $message = $this->db2->getDatabaseName() . ':' . $table . ':' . $name . ' is NOT nullable.';
+                    $message = $db2Name . ':' . $table . ':' . $name . ' is NOT nullable.';
                 } else {
-                    $message = $this->db2->getDatabaseName() . ':' . $table . ':' . $name . ' is nullable.';
+                    $message = $db2Name . ':' . $table . ':' . $name . ' is nullable.';
                 }
 
                 $this->output->write($message, array_merge($context, [
@@ -224,9 +230,9 @@ class TableStructure implements DiffContract
             }
 
             if ($column1->getDefault() != $column2->getDefault()) {
-                $message = $this->db1->getDatabaseName() . ':' . $table . ':' . $name . ':' . $column1->getDefault()
+                $message = $db1Name . ':' . $table . ':' . $name . ':' . $column1->getDefault()
                     . ' vs '
-                    . $this->db2->getDatabaseName() . ':' . $table . ':' . $name . ':' . $column2->getDefault();
+                    . $db2Name . ':' . $table . ':' . $name . ':' . $column2->getDefault();
 
                 $this->output->write($message, array_merge($context, [
                     'column' => $name,
@@ -243,9 +249,9 @@ class TableStructure implements DiffContract
 
             if ($column1->getUnsigned() != $column2->getUnsigned()) {
                 if ($column2->getUnsigned()) {
-                    $message = $this->db2->getDatabaseName() . ':' . $table . ':' . $name . ' is unsigned.';
+                    $message = $db2Name . ':' . $table . ':' . $name . ' is unsigned.';
                 } else {
-                    $message = $this->db2->getDatabaseName() . ':' . $table . ':' . $name . ' is NOT unsigned.';
+                    $message = $db2Name . ':' . $table . ':' . $name . ' is NOT unsigned.';
                 }
 
                 $this->output->write($message, array_merge($context, [
@@ -263,9 +269,9 @@ class TableStructure implements DiffContract
 
             if ($column1->getAutoincrement() != $column2->getAutoincrement()) {
                 if ($column2->getAutoincrement()) {
-                    $message = $this->db2->getDatabaseName() . ':' . $table . ':' . $name . ' is auto_incrementable.';
+                    $message = $db2Name . ':' . $table . ':' . $name . ' is auto_incrementable.';
                 } else {
-                    $message = $this->db2->getDatabaseName() . ':' . $table . ':' . $name . ' is NOT auto_incrementable.';
+                    $message = $db2Name . ':' . $table . ':' . $name . ' is NOT auto_incrementable.';
                 }
 
                 $this->output->write($message, array_merge($context, [
@@ -294,9 +300,12 @@ class TableStructure implements DiffContract
      */
     protected function diffTableIndexes(string $table, Table $table1, Table $table2)
     {
+        $db1Name = $this->db1->getDatabaseName();
+        $db2Name = $this->db2->getDatabaseName();
+
         $context = [
             'table' => $table,
-            'database' => $this->db1->getDatabaseName(),
+            'database' => $db1Name,
             'type' => 'table_index'
         ];
 
@@ -306,7 +315,7 @@ class TableStructure implements DiffContract
         foreach ($table1Indexes as $name => $index1) {
             if (!array_key_exists($name, $table2Indexes)) {
                 $this->output->write(
-                    'Index "' . $name . '" does not exist in "' . $this->db2->getDatabaseName() . '".',
+                    'Index "' . $name . '" does not exist in "' . $db2Name . '".',
                     array_merge($context, [
                         'column' => $name,
                         'type' => 'table_index_exists',
@@ -327,9 +336,9 @@ class TableStructure implements DiffContract
 
             if ($index1->isPrimary() != $index2->isPrimary()) {
                 if ($index2->isPrimary()) {
-                    $message = $this->db2->getDatabaseName() . ':' . $table . ':' . $name . ' is primary index.';
+                    $message = $db2Name . ':' . $table . ':' . $name . ' is primary index.';
                 } else {
-                    $message = $this->db2->getDatabaseName() . ':' . $table . ':' . $name . ' is NOT primary index.';
+                    $message = $db2Name . ':' . $table . ':' . $name . ' is NOT primary index.';
                 }
 
                 $this->output->write($message, array_merge($context, [
@@ -347,9 +356,9 @@ class TableStructure implements DiffContract
 
             if ($index1->isUnique() != $index2->isUnique()) {
                 if ($index2->isUnique()) {
-                    $message = $this->db2->getDatabaseName() . ':' . $table . ':' . $name . ' is unique index.';
+                    $message = $db2Name . ':' . $table . ':' . $name . ' is unique index.';
                 } else {
-                    $message = $this->db2->getDatabaseName() . ':' . $table . ':' . $name . ' is NOT unique index.';
+                    $message = $db2Name . ':' . $table . ':' . $name . ' is NOT unique index.';
                 }
 
                 $this->output->write($message, array_merge($context, [
@@ -366,9 +375,9 @@ class TableStructure implements DiffContract
             }
 
             if ($index1->getColumns() != $index2->getColumns()) {
-                $message = $this->db1->getDatabaseName() . ':' . $table . ':' . $name . ' columns ' . '(' . implode(', ', $index1->getColumns()) . ')'
+                $message = $db1Name . ':' . $table . ':' . $name . ' columns ' . '(' . implode(', ', $index1->getColumns()) . ')'
                     . ' vs '
-                    . $this->db2->getDatabaseName() . ':' . $table . ':' . $name . ' columns ' . '(' . implode(', ', $index2->getColumns()) . ')';
+                    . $db2Name . ':' . $table . ':' . $name . ' columns ' . '(' . implode(', ', $index2->getColumns()) . ')';
 
                 $this->output->write($message, array_merge($context, [
                     'column' => $name,
@@ -384,9 +393,9 @@ class TableStructure implements DiffContract
             }
 
             if ($index1->getFlags() != $index2->getFlags()) {
-                $message = $this->db1->getDatabaseName() . ':' . $table . ':' . $name . ' flags ' . '(' . implode(', ', $index1->getFlags()) . ')'
+                $message = $db1Name . ':' . $table . ':' . $name . ' flags ' . '(' . implode(', ', $index1->getFlags()) . ')'
                     . ' vs '
-                    . $this->db2->getDatabaseName() . ':' . $table . ':' . $name . ' flags ' . '(' . implode(', ', $index2->getFlags()) . ')';
+                    . $db2Name . ':' . $table . ':' . $name . ' flags ' . '(' . implode(', ', $index2->getFlags()) . ')';
 
                 $this->output->write($message, array_merge($context, [
                     'column' => $name,
@@ -402,9 +411,9 @@ class TableStructure implements DiffContract
             }
 
             if ($index1->getOptions() != $index2->getOptions()) {
-                $message = $this->db1->getDatabaseName() . ':' . $table . ':' . $name . ' options ' . '(' . implode(', ', $index1->getOptions()) . ')'
+                $message = $db1Name . ':' . $table . ':' . $name . ' options ' . '(' . implode(', ', $index1->getOptions()) . ')'
                     . ' vs '
-                    . $this->db2->getDatabaseName() . ':' . $table . ':' . $name . ' options ' . '(' . implode(', ', $index2->getOptions()) . ')';
+                    . $db2Name . ':' . $table . ':' . $name . ' options ' . '(' . implode(', ', $index2->getOptions()) . ')';
 
                 $this->output->write($message, array_merge($context, [
                     'column' => $name,
@@ -432,9 +441,12 @@ class TableStructure implements DiffContract
      */
     protected function diffTableForeignKeys(string $table, Table $table1, Table $table2)
     {
+        $db1Name = $this->db1->getDatabaseName();
+        $db2Name = $this->db2->getDatabaseName();
+
         $context = [
             'table' => $table,
-            'database' => $this->db1->getDatabaseName(),
+            'database' => $db1Name,
             'type' => 'table_foreign_key'
         ];
 
@@ -444,7 +456,7 @@ class TableStructure implements DiffContract
         foreach ($table1Keys as $name => $key1) {
             if (!array_key_exists($name, $table2Keys)) {
                 $this->output->write(
-                    'Foreign Key "' . $name . '" does not exist in "' . $this->db2->getDatabaseName() . '".',
+                    'Foreign Key "' . $name . '" does not exist in "' . $db2Name . '".',
                     array_merge($context, [
                         'column' => $name,
                         'type' => 'table_foreign_key_exists',
@@ -464,9 +476,9 @@ class TableStructure implements DiffContract
             ]));
 
             if ($key1->getLocalTableName() != $key2->getLocalTableName()) {
-                $message = $this->db1->getDatabaseName() . ':' . $table . ':' . $name . ' local table ' . $key1->getLocalTableName()
+                $message = $db1Name . ':' . $table . ':' . $name . ' local table ' . $key1->getLocalTableName()
                     . ' vs '
-                    . $this->db2->getDatabaseName() . ':' . $table . ':' . $name . ' local table ' . $key2->getLocalTableName();
+                    . $db2Name . ':' . $table . ':' . $name . ' local table ' . $key2->getLocalTableName();
 
                 $this->output->write($message, array_merge($context, [
                     'column' => $name,
@@ -482,9 +494,9 @@ class TableStructure implements DiffContract
             }
 
             if ($key1->getForeignTableName() != $key2->getForeignTableName()) {
-                $message = $this->db1->getDatabaseName() . ':' . $table . ':' . $name . ' local table ' . $key1->getForeignTableName()
+                $message = $db1Name . ':' . $table . ':' . $name . ' local table ' . $key1->getForeignTableName()
                     . ' vs '
-                    . $this->db2->getDatabaseName() . ':' . $table . ':' . $name . ' local table ' . $key2->getForeignTableName();
+                    . $db2Name . ':' . $table . ':' . $name . ' local table ' . $key2->getForeignTableName();
 
                 $this->output->write($message, array_merge($context, [
                     'column' => $name,
@@ -500,9 +512,9 @@ class TableStructure implements DiffContract
             }
 
             if ($key1->getLocalColumns() != $key2->getLocalColumns()) {
-                $message = $this->db1->getDatabaseName() . ':' . $table . ':' . $name . ' local columns ' . '(' . implode(', ', $key1->getLocalColumns()) . ')'
+                $message = $db1Name . ':' . $table . ':' . $name . ' local columns ' . '(' . implode(', ', $key1->getLocalColumns()) . ')'
                     . ' vs '
-                    . $this->db2->getDatabaseName() . ':' . $table . ':' . $name . ' local columns ' . '(' . implode(', ', $key2->getLocalColumns()) . ')';
+                    . $db2Name . ':' . $table . ':' . $name . ' local columns ' . '(' . implode(', ', $key2->getLocalColumns()) . ')';
 
                 $this->output->write($message, array_merge($context, [
                     'column' => $name,
@@ -518,9 +530,9 @@ class TableStructure implements DiffContract
             }
 
             if ($key1->getForeignColumns() != $key2->getForeignColumns()) {
-                $message = $this->db1->getDatabaseName() . ':' . $table . ':' . $name . ' foreign columns ' . '(' . implode(', ', $key1->getForeignColumns()) . ')'
+                $message = $db1Name . ':' . $table . ':' . $name . ' foreign columns ' . '(' . implode(', ', $key1->getForeignColumns()) . ')'
                     . ' vs '
-                    . $this->db2->getDatabaseName() . ':' . $table . ':' . $name . ' foreign columns ' . '(' . implode(', ', $key2->getForeignColumns()) . ')';
+                    . $db2Name . ':' . $table . ':' . $name . ' foreign columns ' . '(' . implode(', ', $key2->getForeignColumns()) . ')';
 
                 $this->output->write($message, array_merge($context, [
                     'column' => $name,
@@ -536,7 +548,7 @@ class TableStructure implements DiffContract
             }
 
             if ($key1->onUpdate() != $key2->onUpdate()) {
-                $message = $this->db2->getDatabaseName() . ':' . $table . ':' . $name . ' on update "'.$key1->onUpdate().'".';
+                $message = $db2Name . ':' . $table . ':' . $name . ' on update "'.$key1->onUpdate().'".';
 
                 $this->output->write($message, array_merge($context, [
                     'column' => $name,
@@ -552,7 +564,7 @@ class TableStructure implements DiffContract
             }
 
             if ($key1->onDelete() != $key2->onDelete()) {
-                $message = $this->db2->getDatabaseName() . ':' . $table . ':' . $name . ' on delete "'.$key1->onDelete().'".';
+                $message = $db2Name . ':' . $table . ':' . $name . ' on delete "'.$key1->onDelete().'".';
 
                 $this->output->write($message, array_merge($context, [
                     'column' => $name,

@@ -38,12 +38,15 @@ class TableNames implements DiffContract
         $db1Tables = $this->tablesInDb($this->db1);
         $db2Tables = $this->tablesInDb($this->db2);
 
+        $db1Name = $this->db1->getDatabaseName();
+        $db2Name = $this->db2->getDatabaseName();
+
         foreach ($db1Tables as $table) {
-            $this->checkDifference($this->db1->getDatabaseName(), $table, $db2Tables);
+            $this->checkDifference($db1Name, $table, $db2Tables, 'comparison', $db2Name);
         }
 
         foreach ($db2Tables as $table) {
-            $this->checkDifference($this->db2->getDatabaseName(), $table, $db1Tables, 'primary');
+            $this->checkDifference($db2Name, $table, $db1Tables, 'primary', $db1Name);
         }
     }
 
@@ -66,7 +69,7 @@ class TableNames implements DiffContract
      * @param array $otherTables
      * @param string $type
      */
-    protected function checkDifference(string $databaseName, string $table, array $otherTables, $type = 'comparison')
+    protected function checkDifference(string $databaseName, string $table, array $otherTables, $type, $secondaryDatabaseName)
     {
         $context = [
             'table' => $table,
@@ -76,7 +79,7 @@ class TableNames implements DiffContract
 
         if (!in_array($table, $otherTables)) {
             $this->output->write(
-                'Table "' . $table . '" was found in "' . $databaseName . '" but not in comparison.',
+                'Table "' . $table . '" was found in "' . $databaseName . '" but not in "' . $secondaryDatabaseName . '".',
                 array_merge($context, [
                     'result' => false
                 ])
