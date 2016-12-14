@@ -39,6 +39,7 @@ class TableStructureSpec extends ObjectBehavior
         $connection1->getDoctrineSchemaManager()->shouldBeCalled()->willReturn($schema1);
         $connection2->getDoctrineSchemaManager()->shouldBeCalled()->willReturn($schema2);
         $connection1->getDatabaseName()->shouldBeCalled()->willReturn('db1');
+        $connection2->getDatabaseName()->shouldBeCalled()->willReturn('db2');
 
         $schema1->listTableNames()->shouldBeCalled()->willReturn([
             'table1',
