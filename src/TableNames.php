@@ -30,6 +30,9 @@ class TableNames implements DiffContract
         $this->db2 = $connection2;
     }
 
+    /**
+     * Run the diff.
+     */
     public function diff()
     {
         $db1Tables = $this->tablesInDb($this->db1);
@@ -44,11 +47,25 @@ class TableNames implements DiffContract
         }
     }
 
+    /**
+     * Fetch all tables in a given database connection.
+     *
+     * @param Connection $db
+     * @return array
+     */
     protected function tablesInDb(Connection $db) : array
     {
         return $db->getDoctrineSchemaManager()->listTableNames();
     }
 
+    /**
+     * Check the given table is in the other tables array.
+     *
+     * @param string $databaseName
+     * @param string $table
+     * @param array $otherTables
+     * @param string $type
+     */
     protected function checkDifference(string $databaseName, string $table, array $otherTables, $type = 'comparison')
     {
         $context = [

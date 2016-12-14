@@ -7,6 +7,11 @@ use PMConnect\DBDiff\Utils\Console\Commands\DiffDatabase;
 
 class DFDiffUtilServiceProvider extends ServiceProvider
 {
+    /**
+     * Setup the database diff command for Laravel.
+     *
+     * @return void
+     */
     public function boot()
     {
         $this->commands([

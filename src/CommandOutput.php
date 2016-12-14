@@ -5,6 +5,13 @@ namespace PMConnect\DBDiff\Utils;
 use Illuminate\Console\Command;
 use PMConnect\DBDiff\Utils\Contracts\Output;
 
+/**
+ * Class CommandOutput
+ *
+ * Output the results of the diff to the console.
+ *
+ * @package PMConnect\DBDiff\Utils
+ */
 class CommandOutput implements Output  {
 
     /**
@@ -17,6 +24,12 @@ class CommandOutput implements Output  {
         $this->console = $console;
     }
 
+    /**
+     * Write the given message and context.
+     *
+     * @param string|null $message
+     * @param array $context
+     */
     public function write(string $message = null, array $context = [])
     {
         if (!$context['result']) {

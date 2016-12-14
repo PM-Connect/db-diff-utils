@@ -3,7 +3,6 @@
 namespace PMConnect\DBDiff\Utils\Console\Commands;
 
 use PMConnect\DBDiff\Utils\CommandOutput;
-use PMConnect\DBDiff\Utils\Contracts\Output;
 use Illuminate\Console\Command;
 use Illuminate\Database\Connectors\ConnectionFactory;
 use PMConnect\DBDiff\Utils\Diff;
@@ -27,8 +26,6 @@ class DiffDatabase extends Command
 
     /**
      * Create a new command instance.
-     *
-     * @return void
      */
     public function __construct()
     {
@@ -65,6 +62,12 @@ class DiffDatabase extends Command
         $diffRunner->diff();
     }
 
+    /**
+     * Collect the required database connection info.
+     *
+     * @param null $name
+     * @return array
+     */
     protected function collectDbInfo($name = null)
     {
         $name = $this->ask('Enter a name for the connection', $name);

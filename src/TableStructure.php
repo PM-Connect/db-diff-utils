@@ -31,6 +31,9 @@ class TableStructure implements DiffContract
         $this->db2 = $connection2;
     }
 
+    /**
+     * Run the diff.
+     */
     public function diff()
     {
         $tables = $this->tablesInDb($this->db1);
@@ -43,11 +46,22 @@ class TableStructure implements DiffContract
         }
     }
 
+    /**
+     * Get all tables in  a given database connection.
+     *
+     * @param Connection $db
+     * @return array
+     */
     protected function tablesInDb(Connection $db) : array
     {
         return $db->getDoctrineSchemaManager()->listTableNames();
     }
 
+    /**
+     * Run the diff on the database schema.
+     *
+     * @param string $table
+     */
     protected function diffTableSchema(string $table)
     {
         $db1Schema = $this->db1->getDoctrineSchemaManager();
@@ -59,6 +73,12 @@ class TableStructure implements DiffContract
         $this->diffColumns($db1Table, $db2Table);
     }
 
+    /**
+     * Calculate the difference in table columns.
+     *
+     * @param Table $table1
+     * @param Table $table2
+     */
     protected function diffColumns(Table $table1, Table $table2)
     {
         $db1Columns = $table1->getColumns();
@@ -71,6 +91,8 @@ class TableStructure implements DiffContract
     }
 
     /**
+     * Calculate the difference in table column names.
+     *
      * @param string $table
      * @param \Doctrine\DBAL\Schema\Column[] $db1Columns
      * @param \Doctrine\DBAL\Schema\Column[] $db2Columns
@@ -122,6 +144,8 @@ class TableStructure implements DiffContract
     }
 
     /**
+     * Calculate the difference in database column structures.
+     *
      * @param string $table
      * @param \Doctrine\DBAL\Schema\Column[] $db1Columns
      * @param \Doctrine\DBAL\Schema\Column[] $db2Columns
@@ -260,6 +284,8 @@ class TableStructure implements DiffContract
     }
 
     /**
+     * Calculate the difference in database table indexes.
+     *
      * @param string $table
      * @param Table $table1
      * @param Table $table2
@@ -396,6 +422,8 @@ class TableStructure implements DiffContract
     }
 
     /**
+     * Calculate the difference in database table foreign keys.
+     *
      * @param string $table
      * @param Table $table1
      * @param Table $table2

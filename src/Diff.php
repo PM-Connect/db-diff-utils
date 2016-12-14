@@ -38,6 +38,9 @@ class Diff implements DiffContract
         $this->db2 = $connection2;
     }
 
+    /**
+     * Run all of the available diff tasks.
+     */
     public function diff()
     {
         foreach ($this->diffs as $diff) {
