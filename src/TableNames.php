@@ -76,7 +76,7 @@ class TableNames implements DiffContract
 
         if (!in_array($table, $otherTables)) {
             $this->output->write(
-                'Table "' . $table . '" was not found in "' . $databaseName . '" but not in comparison.',
+                'Table "' . $table . '" was found in "' . $databaseName . '" but not in comparison.',
                 array_merge($context, [
                     'result' => false
                 ])
