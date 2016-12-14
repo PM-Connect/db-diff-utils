@@ -210,7 +210,7 @@ class TableStructure implements DiffContract
             }
 
             if ($column1->getNotnull() != $column2->getNotnull()) {
-                if ($column2->getNotNull()) {
+                if ($column2->getNotnull()) {
                     $message = $db2Name . ':' . $table . ':' . $name . ' is NOT nullable.';
                 } else {
                     $message = $db2Name . ':' . $table . ':' . $name . ' is nullable.';
