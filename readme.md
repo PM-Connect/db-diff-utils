@@ -1,5 +1,10 @@
 # Database Diff Utils [![Build Status](https://travis-ci.org/pm-connect/db-diff-utils.svg)](https://travis-ci.org/pm-connect/db-diff-utils) [![Latest Stable Version](https://poser.pugx.org/pm-connect/db-diff-utils/v/stable)](https://packagist.org/packages/pm-connect/db-diff-utils) [![Total Downloads](https://poser.pugx.org/pm-connect/db-diff-utils/downloads.svg)](https://packagist.org/packages/pm-connect/db-diff-utils) [![Latest Unstable Version](https://poser.pugx.org/pm-connect/db-diff-utils/v/unstable.svg)](https://packagist.org/packages/pm-connect/db-diff-utils) [![License](https://poser.pugx.org/pm-connect/db-diff-utils/license.svg)](https://packagist.org/packages/pm-connect/db-diff-utils)
 
+## Looking For An All-In-One DB Diff Tool?
+
+If you're looking for an all-in-one database diff tool, checkout [DB Diff](https://github.com/PM-Connect/db-diff)
+
+## Intro
 
 A simple set of utilities to be used for generating a diff between 2 database connections.
 
