@@ -205,9 +205,9 @@ class TableStructure implements DiffContract
 
             if ($column1->getNotnull() != $column2->getNotnull()) {
                 if ($column2->getNotNull()) {
-                    $message = $this->db2->getDatabaseName() . ':' . $table . ':' . $name . ' is nullable.';
-                } else {
                     $message = $this->db2->getDatabaseName() . ':' . $table . ':' . $name . ' is NOT nullable.';
+                } else {
+                    $message = $this->db2->getDatabaseName() . ':' . $table . ':' . $name . ' is nullable.';
                 }
 
                 $this->output->write($message, array_merge($context, [
