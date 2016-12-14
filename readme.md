@@ -126,3 +126,7 @@ Provided you have added the service provider (as mentioned above) you can use th
 This command will automatically prompt for the database connection details from you, then run the diff and output any errors to the screen.
 
 The `--default-collation` option is optional and will default to 'utf8mb4_general_ci' if not provided, but can still be provided during the config of each database.
+
+## Issues
+
+Please submit any issues using GitHubs build in issue management.
