@@ -6,10 +6,10 @@ A simple set of utilities to be used for generating a diff between 2 database co
 Also contains a Laravel service provider and console command that can diff 2 given databases.
 
 - [Installation](#installation)
-    - Laravel Service Provider
+    - [Laravel Service Provider](#optional-add-the-laravel-service-provider)
 - [Usage](#usage)
-    - Using The Provided Objects
-    - Using The Artisan Console Command
+    - [Using The Provided Objects](#using-the-provided-objects)
+    - [Using The Artisan Console Command](#using-the-laravel-artisan-console-command)
 
 ## Installation
 
