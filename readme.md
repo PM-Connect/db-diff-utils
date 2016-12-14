@@ -58,7 +58,7 @@ The `Diff` object accepts in the following as constructor parameters.
         - `Illuminate\Database\PostgresConnection`
         - `Illuminate\Database\SQLiteConnection`
 
-```
+```php
 <?php
 
 use PMConnect\DBDiff\Utils\Diff;
