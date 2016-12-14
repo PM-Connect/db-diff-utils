@@ -5,7 +5,7 @@ namespace PMConnect\DBDiff\Utils;
 use Illuminate\Support\ServiceProvider;
 use PMConnect\DBDiff\Utils\Console\Commands\DiffDatabase;
 
-class DFDiffUtilServiceProvider extends ServiceProvider
+class DBDiffUtilServiceProvider extends ServiceProvider
 {
     /**
      * Setup the database diff command for Laravel.
