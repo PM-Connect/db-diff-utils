@@ -68,6 +68,7 @@ class TableNames implements DiffContract
      * @param string $table
      * @param array $otherTables
      * @param string $type
+     * @param $secondaryDatabaseName
      */
     protected function checkDifference(string $databaseName, string $table, array $otherTables, $type, $secondaryDatabaseName)
     {
